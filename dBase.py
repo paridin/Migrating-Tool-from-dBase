@@ -24,7 +24,7 @@ class MigrationFromDBase:
     '''
     TABLES_PATH = ('/').join(os.path.abspath(__file__).split('/')[0:-1]) + '/tables'
 
-    def fetch_dbase_table(self, table, keys, path=None):
+    def fetch_dbase_table(self, table, keys=None, path=None):
         ''' Fetches rows from a dBase Table
 
         Retrieves rows pertaining to the given keys from the Table instance
@@ -35,6 +35,8 @@ class MigrationFromDBase:
          it will take it the default TABLES_PATH
         :return list: Return a list with internal dictionary
         '''
+        if keys is None:
+            keys = self.fetch_dbase_keys(table)
         if not path is None:
             if os.path.isdir(path):
                 if path[-1] == '/':
@@ -77,9 +79,13 @@ class MigrationFromDBase:
 if __name__ == '__main__':
     m = MigrationFromDBase()
     # specify path
-    menus = m.fetch_dbase_table('ACCMENU.DBF', ['NOMBRE'], '/Volumes/home/paridin/Devel/python/ppm/migrations/')
-    for menu in menus:
-        print (menu['NOMBRE'])
+    #keys = m.fetch_dbase_keys('TRAMITE.DBF')
+    #print (keys)
 
-    keys = m.fetch_dbase_keys('ACCMENU.DBF')
-    print (keys)
+    menus = m.fetch_dbase_table('TRAMITE.DBF')
+
+    for menu in menus:
+        print (menu)
+
+    #keys = m.fetch_dbase_keys('TRAMITES.DBF')
+    #print (keys)
